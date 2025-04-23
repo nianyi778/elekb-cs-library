@@ -1,0 +1,40 @@
+# dependencies
+/node_modules
+
+# build output
+/dist
+/lib
+/build
+/.turbo
+
+# temporary
+*.log
+*.tmp
+*.swp
+
+# macOS system files
+.DS_Store
+
+# environment variables
+.env
+.env.*
+
+# typescript
+*.tsbuildinfo
+
+# IDEs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# coverage and test
+coverage/
+*.lcov
+
+# examples and playground output (optional if included)
+examples/**/node_modules
+examples/**/dist
+examples/**/.vite

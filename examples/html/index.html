@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Chat Box SDK - HTML Demo</title>
+</head>
+<body>
+  <h1>AI Chat Box SDK - HTML Demo</h1>
+  <button id="chatTrigger">Open Chat</button>
+
+  <script  src="../../dist/ai-chat-box-sdk.umd.js"></script>
+  <script>
+    window.onload = function (){
+      const chat = new window.AIChatBox({
+        url: 'https://elekb.io/entrance',
+        styles:{
+          width: '400px',
+          height: '600px',
+          borderRadius: '8px',
+          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+          backgroundColor: '#fff',
+          color: '#333',
+          fontSize: '14px',
+          lineHeight: '1.5'
+        },
+        triggerSelector: '#chatTrigger',
+        user: { "id": 'j.t', name: 'React User', lang: 'en' },
+    });
+    chat.init();
+    }
+  </script>
+</body>
+</html>

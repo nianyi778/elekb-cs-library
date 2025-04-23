@@ -1,0 +1,42 @@
+{
+    "name": "ai-chat-box-sdk",
+    "version": "0.1.0",
+    "type": "module",
+    "description": "A lightweight SDK to embed an AI chat box via iframe into any web project.",
+    "main": "dist/ai-chat-box-sdk.umd.js",
+    "module": "dist/ai-chat-box-sdk.esm.js",
+    "types": "dist/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./dist/ai-chat-box-sdk.esm.js",
+            "require": "./dist/ai-chat-box-sdk.umd.js"
+        }
+    },
+    "scripts": {
+        "dev": "rollup -c -w",
+        "build": "rollup -c",
+        "clean": "rm -rf dist",
+        "prepublishOnly": "npm run build"
+    },
+    "files": [
+        "dist"
+    ],
+    "keywords": [
+        "chatbox",
+        "iframe",
+        "sdk",
+        "ai",
+        "widget"
+    ],
+    "author": "elestyle.jp",
+    "license": "MIT",
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.0",
+        "@rollup/plugin-node-resolve": "^15.0.1",
+        "@rollup/plugin-typescript": "^11.1.0",
+        "rollup": "^4.0.0",
+        "tslib": "^2.8.1",
+        "typescript": "^5.0.0"
+    },
+    "packageManager": "pnpm@10.8.1+sha512.c50088ba998c67b8ca8c99df8a5e02fd2ae2e2b29aaf238feaa9e124248d3f48f9fb6db2424949ff901cffbb5e0f0cc1ad6aedb602cd29450751d11c35023677"
+}
