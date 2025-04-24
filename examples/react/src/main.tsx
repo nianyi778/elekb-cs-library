@@ -3,7 +3,6 @@ import AIChatBox from "../../../";
 
 const chat = new AIChatBox({
   url: "https://elekb.io/entrance",
-  mode:'new-tab',
   styles: {
     width: "400px",
     height: "600px",
