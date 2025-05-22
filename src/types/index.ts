@@ -1,18 +1,32 @@
-export interface UserInfo {
-  /** 用户唯一 ID（建议使用业务方用户 ID） */
-  id: string;
+export interface ChatSessionPayload {
+  /** 会话相关信息 */
+  uuid: string;         // 页面唯一识别码，短期有效
+  sessionId: string;    // 长期持久化的会话 ID（便于追踪）
 
-  /** 用户昵称（可选） */
-  name?: string;
+  /** 本地化语言 */
+  lang?: 'zh' | 'en' | 'ja';
 
-  /** 用户头像 URL（可选） */
-  avatar?: string;
+  /** 当前功能上下文 */
+  feature?: string;           // 功能编号，如 'settlement.confirm'
+  menu?: {
+    id: string;
+    name: string;
+  };
 
-  /** 鉴权 token（如有需要，可作为 query 参数传入） */
+  /** 当前用户信息 */
+  user?: {
+    id: string;
+    name: string;
+  };
+
+  /** 鉴权令牌 */
   token?: string;
 
-  /** 用户语言设置（例如 'zh-CN'、'en-US'） */
-  lang?: string;
+  /** 标签（权限/角色/客户分级等） */
+  tags?: string[];
+
+  /** 自定义信息 */
+  customData?: unknown;
 }
 
 export interface AIChatBoxOptions {
@@ -41,9 +55,9 @@ export interface AIChatBoxOptions {
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
   /**
-   * 当前用户信息，会作为参数传递给 iframe 页面
+   * 交互信息，会作为参数传递给 iframe 页面
    */
-  user?: UserInfo;
+  payload?: ChatSessionPayload;
 
   /**
    * 触发按钮的选择器（如 '#chatBtn'），SDK 会自动绑定点击事件
@@ -66,11 +80,11 @@ export interface AIChatBoxOptions {
   /**
    * iframe 展开时触发的回调（可用于联动 UI）
    */
-  onOpen?: () => void;
+  onOpen?: (visible: boolean) => void;
 
   /**
    * iframe 收起时触发的回调（可用于联动 UI）
    */
-  onClose?: () => void;
+  onClose?: (visible: boolean) => void;
 }
 

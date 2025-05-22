@@ -39,6 +39,7 @@
         visible = false;
         constructor(config) {
             this.config = config;
+            this.listenIframeEvents();
         }
         init() {
             const selector = this.config.triggerSelector;
@@ -53,36 +54,35 @@
             }
         }
         toggle() {
-            switch (this.config.mode) {
-                case 'new-tab': {
-                    window.open(this.buildIframeUrl(), '_blank');
-                    break;
-                }
-                case 'custom': {
-                    this.ensureIframe(true);
-                    this.visible = !this.visible;
-                    this.iframe?.style && (this.iframe.style.display = this.visible ? 'block' : 'none');
-                    this.visible ? this.config.onOpen?.() : this.config.onClose?.();
-                    break;
-                }
-                case 'popup':
-                default: {
-                    this.ensureIframe();
-                    this.visible = !this.visible;
-                    this.iframe?.style && (this.iframe.style.display = this.visible ? 'block' : 'none');
-                    this.visible ? this.config.onOpen?.() : this.config.onClose?.();
-                    break;
-                }
+            if (this.config.mode === "new-tab") {
+                window.open(this.buildIframeUrl(), "_blank");
+                return;
+            }
+            const useCustom = this.config.mode === "custom";
+            this.ensureIframe(useCustom);
+            this.visible = !this.visible;
+            if (this.iframe?.style) {
+                this.iframe.style.display = this.visible ? "block" : "none";
+            }
+            if (this.visible) {
+                this.config.onOpen?.(true);
+            }
+            else {
+                this.config.onClose?.(false);
             }
         }
         updateConfig(newConfig) {
             this.config = { ...this.config, ...newConfig };
             if (this.iframe) {
-                this.iframe.src = this.buildIframeUrl();
+                const newSrc = this.buildIframeUrl();
+                if (this.iframe.src !== newSrc) {
+                    console.log("[AIChatBox] Updating iframe src:", newSrc);
+                    this.iframe.src = newSrc;
+                }
                 this.applyStyles();
             }
             else {
-                const useCustom = this.config.mode === 'custom';
+                const useCustom = this.config.mode === "custom";
                 this.ensureIframe(useCustom);
             }
         }
@@ -91,23 +91,35 @@
             this.iframe = undefined;
             this.visible = false;
         }
+        sendUpdateContext(context) {
+            if (!this.iframe?.contentWindow)
+                return;
+            this.config.payload = {
+                ...this.config.payload,
+                ...context,
+            };
+            this.iframe.contentWindow.postMessage({
+                type: "AIChat:update",
+                payload: this.config.payload,
+            }, "*");
+        }
         ensureIframe(useCustomContainer = false) {
             if (!this.iframe) {
                 const iframe = createIframe(this.buildIframeUrl());
-                iframe.dataset['chatbox'] = 'true';
-                if (useCustomContainer && this.config.container) {
-                    const container = typeof this.config.container === 'string'
+                iframe.dataset["chatbox"] = "true";
+                iframe.onload = () => {
+                    this.sendInitContext();
+                };
+                const container = useCustomContainer && this.config.container
+                    ? typeof this.config.container === "string"
                         ? document.querySelector(this.config.container)
-                        : this.config.container;
-                    if (container) {
-                        container.appendChild(iframe);
-                    }
-                    else {
-                        console.warn('[AIChatBox] Container not found for custom mode.');
-                    }
+                        : this.config.container
+                    : document.body;
+                if (container) {
+                    container.appendChild(iframe);
                 }
                 else {
-                    document.body.appendChild(iframe);
+                    console.warn("[AIChatBox] Container not found for custom mode.");
                 }
                 this.iframe = iframe;
             }
@@ -116,41 +128,69 @@
         applyStyles() {
             if (!this.iframe)
                 return;
-            const { mode = 'popup', position = 'bottom-right', styles = {} } = this.config;
-            const mergedStyles = mode === 'custom'
+            const { mode = "popup", position = "bottom-right", styles = {}, } = this.config;
+            const mergedStyles = mode === "custom"
                 ? {
-                    position: 'static',
-                    width: '100%',
-                    height: '100%',
-                    border: 'none',
-                    display: this.visible ? 'block' : 'none',
-                    ...styles
+                    position: "static",
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                    display: this.visible ? "block" : "none",
+                    ...styles,
                 }
                 : {
                     ...DEFAULT_STYLES,
                     ...resolvePositionStyle(position),
                     ...styles,
-                    display: this.visible ? 'block' : 'none'
+                    display: this.visible ? "block" : "none",
                 };
             Object.assign(this.iframe.style, mergedStyles);
         }
         buildIframeUrl() {
             const url = new URL(this.config.url);
-            const { user } = this.config;
-            if (user) {
-                const { id, name, avatar, token, lang } = user;
-                if (id)
-                    url.searchParams.set("user_id", id);
-                if (name)
-                    url.searchParams.set("name", name);
-                if (avatar)
-                    url.searchParams.set("avatar", avatar);
-                if (token)
-                    url.searchParams.set("token", token);
-                if (lang)
-                    url.searchParams.set("lang", lang);
-            }
+            const { user, lang, token, uuid, sessionId } = this.config.payload || {};
+            const { id, name } = user || {};
+            if (id)
+                url.searchParams.set("user_id", id);
+            if (name)
+                url.searchParams.set("user_name", name);
+            if (token)
+                url.searchParams.set("token", token);
+            if (lang)
+                url.searchParams.set("lang", lang);
+            if (uuid)
+                url.searchParams.set("uuid", uuid);
+            if (sessionId)
+                url.searchParams.set("session_id", sessionId);
             return url.toString();
+        }
+        sendInitContext() {
+            if (!this.iframe?.contentWindow)
+                return;
+            const payload = this.config.payload || {};
+            this.iframe.contentWindow.postMessage({
+                type: "AIChat:init",
+                payload,
+            }, this.getIframeOrigin());
+        }
+        listenIframeEvents() {
+            window.addEventListener("message", (event) => {
+                const origin = this.getIframeOrigin();
+                if (event.data?.type === "AIChat:close" && event.origin === origin) {
+                    this.destroy();
+                    this.config.onClose?.(false);
+                }
+            });
+        }
+        getIframeOrigin() {
+            try {
+                const url = new URL(this.config.url); // 更可靠：配置中地址恒定
+                return url.origin;
+            }
+            catch (e) {
+                console.warn("[AIChatBox] Invalid iframe URL for origin extraction");
+                return "*"; // fallback for development
+            }
         }
     }
 

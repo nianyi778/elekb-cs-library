@@ -18,7 +18,15 @@
       mode: 'custom',
       url: 'https://elekb.io/entrance',
       container: chatContainer.value!,
-      user: { "id": 'j.t', name: 'React User', lang: 'en' },
+      payload:{
+        uuid: '1231231231',
+        sessionId: '1231231231',
+        lang: 'en',
+        user: {
+          id: 'j.t',
+          name: 'React User',
+        }
+      }
     });
     chat.init();
   });

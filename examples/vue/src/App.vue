@@ -9,22 +9,30 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import Custom from './Custom.vue';
-import  AIChatBox  from '../../../';
+import AIChatBox from '../../../';
 
 const chat = new AIChatBox({
   url: 'https://elekb.io/entrance',
-        styles:{
-          width: '400px',
-          height: '600px',
-          borderRadius: '8px',
-          boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-          backgroundColor: '#fff',
-          color: '#333',
-          fontSize: '14px',
-          lineHeight: '1.5'
-        },
-        triggerSelector: '#chatTrigger',
-        user: { "id": 'j.t', name: 'React User', lang: 'en' },
+  styles: {
+    width: '400px',
+    height: '600px',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+    backgroundColor: '#fff',
+    color: '#333',
+    fontSize: '14px',
+    lineHeight: '1.5'
+  },
+  triggerSelector: '#chatTrigger',
+  payload: {
+    uuid: '1231231231',
+    sessionId: '1231231231',
+    lang: 'en',
+    user: {
+      id: 'j.t',
+      name: 'React User',
+    }
+  }
 });
 
 onMounted(() => chat.init());
