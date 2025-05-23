@@ -1,10 +1,10 @@
 export interface ChatSessionPayload {
   /** 会话相关信息 */
-  uuid: string; // 页面唯一识别码，短期有效
-  sessionId: string; // 长期持久化的会话 ID（便于追踪）
+  uuid: string; // 用户唯一识别码，浏览器本地存储
+  sessionId: string; // 会话 ID（便于追踪）
 
   /** 本地化语言 */
-  lang?: "zh" | "en" | "ja";
+  lang?: "en-US" | "ja-JP" | "zh-CN" | "zh-TW"; // 后续待扩展
 
   /** 当前功能上下文 */
   feature?: string; // 功能编号，如 'settlement.confirm'
@@ -43,7 +43,7 @@ export interface AIChatBoxOptions {
 
   /**
    * iframe 的 className，用于自定义样式
-   * */ 
+   * */
   class?: string;
 
   /**
