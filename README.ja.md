@@ -8,11 +8,11 @@ AI チャットボックスをあらゆる Web ページに簡単に埋め込む
 ## 📦 インストール方法
 
 ```bash
-pnpm add ai-chat-box-sdk
+pnpm add ai-chat-bot-sdk
 # または
-npm install ai-chat-box-sdk
+npm install ai-chat-bot-sdk
 # または
-yarn add ai-chat-box-sdk
+yarn add ai-chat-bot-sdk
 ```
 
 ---
@@ -23,7 +23,7 @@ yarn add ai-chat-box-sdk
 ```html
 <div id="chatContainer"></div>
 <button id="chatTrigger">チャットを開く</button>
-<script src="./dist/ai-chat-box-sdk.umd.js"></script>
+<script src="./dist/ai-chat-bot-sdk.umd.js"></script>
 <script>
   const chat = new window.AIChatBox({
     url: 'https://chat.example.com',
@@ -39,7 +39,7 @@ yarn add ai-chat-box-sdk
 ### React の例（TypeScript）
 ```tsx
 import { useEffect, useRef } from 'react';
-import { AIChatBox } from 'ai-chat-box-sdk';
+import { AIChatBox } from 'ai-chat-bot-sdk';
 
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,7 +74,7 @@ export default function App() {
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { AIChatBox } from 'ai-chat-box-sdk';
+import { AIChatBox } from 'ai-chat-bot-sdk';
 
 const containerRef = ref<HTMLElement | null>(null);
 let chat: AIChatBox;

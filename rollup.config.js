@@ -7,13 +7,13 @@ export default {
   input: 'src/index.ts',
   output: [
     {
-      file: 'dist/ai-chat-box-sdk.umd.js',
+      file: 'dist/ai-chat-bot-sdk.umd.js',
       format: 'umd',
       name: 'AIChatBox',
       globals: {},
     },
     {
-      file: 'dist/ai-chat-box-sdk.esm.js',
+      file: 'dist/ai-chat-bot-sdk.esm.js',
       format: 'esm'
     }
   ],

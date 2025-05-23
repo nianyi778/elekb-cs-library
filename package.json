@@ -1,15 +1,15 @@
 {
-    "name": "ai-chat-box-sdk",
+    "name": "ai-chat-bot-sdk",
     "version": "0.1.0",
     "type": "module",
     "description": "A lightweight SDK to embed an AI chat box via iframe into any web project.",
-    "main": "dist/ai-chat-box-sdk.umd.js",
-    "module": "dist/ai-chat-box-sdk.esm.js",
+    "main": "dist/ai-chat-bot-sdk.umd.js",
+    "module": "dist/ai-chat-bot-sdk.esm.js",
     "types": "dist/index.d.ts",
     "exports": {
         ".": {
-            "import": "./dist/ai-chat-box-sdk.esm.js",
-            "require": "./dist/ai-chat-box-sdk.umd.js"
+            "import": "./dist/ai-chat-bot-sdk.esm.js",
+            "require": "./dist/ai-chat-bot-sdk.umd.js"
         }
     },
     "scripts": {

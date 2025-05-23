@@ -8,11 +8,11 @@ A lightweight, framework-agnostic frontend SDK that allows you to easily integra
 ## 📦 Installation
 
 ```bash
-pnpm add ai-chat-box-sdk
+pnpm add ai-chat-bot-sdk
 # or
-npm install ai-chat-box-sdk
+npm install ai-chat-bot-sdk
 # or
-yarn add ai-chat-box-sdk
+yarn add ai-chat-bot-sdk
 ```
 
 ---
@@ -24,7 +24,7 @@ yarn add ai-chat-box-sdk
 ```html
 <div id="chatContainer"></div>
 <button id="chatTrigger">Open Chat</button>
-<script src="./dist/ai-chat-box-sdk.umd.js"></script>
+<script src="./dist/ai-chat-bot-sdk.umd.js"></script>
 <script>
   const chat = new window.AIChatBox({
     url: 'https://chat.example.com',
@@ -41,7 +41,7 @@ yarn add ai-chat-box-sdk
 
 ```tsx
 import { useEffect, useRef } from 'react';
-import { AIChatBox } from 'ai-chat-box-sdk';
+import { AIChatBox } from 'ai-chat-bot-sdk';
 
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,7 +77,7 @@ export default function App() {
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { AIChatBox } from 'ai-chat-box-sdk';
+import { AIChatBox } from 'ai-chat-bot-sdk';
 
 const containerRef = ref<HTMLElement | null>(null);
 let chat: AIChatBox;
