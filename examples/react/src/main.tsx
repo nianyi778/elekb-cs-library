@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
-import AIChatBox from "../../../";
+import AIChatBot from "../../../";
 
-const chat = new AIChatBox({
+const chat = new AIChatBot({
   // url: "https://elekb.io/entrance",
   url: "http://127.0.0.1:5500/examples/iframe/index.html",
   styles: {
@@ -14,7 +14,7 @@ const chat = new AIChatBox({
   onClose: () => {
     console.log("Chat closed");
   },
-  onReady: () => {
+  onAuth: () => {
     chat.init();
     console.log("Chat ready");
   },
@@ -27,7 +27,7 @@ const chat = new AIChatBox({
       id: "j.t",
       name: "React User",
     },
-    lang: "en",
+    lang: "en-US",
   },
 });
 
@@ -46,7 +46,7 @@ function App() {
                   id: "j.t",
                   name: "React 1",
                 },
-                lang: "en",
+                lang: "en-US",
               });
             }
             console.log("Chat toggled", chat);
@@ -64,7 +64,7 @@ function App() {
                   id: "j.t",
                   name: "React 2",
                 },
-                lang: "zh",
+                lang: "zh-CN",
               });
             }
             console.log("Chat toggled", chat);

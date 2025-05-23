@@ -8,10 +8,10 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
+import AIChatBot from '../../../';
 import Custom from './Custom.vue';
-import AIChatBox from '../../../';
 
-const chat = new AIChatBox({
+const chat = new AIChatBot({
   url: 'https://elekb.io/entrance',
   styles: {
     width: '400px',
@@ -27,7 +27,7 @@ const chat = new AIChatBox({
   payload: {
     uuid: '1231231231',
     sessionId: '1231231231',
-    lang: 'en',
+    lang: 'en-US',
     user: {
       id: 'j.t',
       name: 'React User',

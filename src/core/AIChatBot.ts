@@ -1,14 +1,14 @@
-import type { AIChatBoxOptions, ChatPayload } from "../types";
+import type { AIChatBotOptions, ChatPayload } from "../types";
 import { createIframe, DEFAULT_STYLES } from "../dom/createIframe";
 import { resolvePositionStyle } from "../dom/position";
 
-export class AIChatBox {
-  private config: AIChatBoxOptions;
+export class AIChatBot {
+  private config: AIChatBotOptions;
   private iframe?: HTMLIFrameElement;
   visible = false;
   loading = false;
 
-  constructor(config: AIChatBoxOptions) {
+  constructor(config: AIChatBotOptions) {
     this.config = config;
     this.listenIframeEvents();
   }
@@ -20,7 +20,7 @@ export class AIChatBox {
       if (trigger) {
         trigger.addEventListener("click", () => this.toggle());
       } else {
-        console.warn(`[AIChatBox] Cannot find trigger: ${selector}`);
+        console.warn(`[AIChatBot] Cannot find trigger: ${selector}`);
       }
     }
   }
@@ -46,13 +46,13 @@ export class AIChatBox {
     }
   }
 
-  updateConfig(newConfig: Partial<AIChatBoxOptions>) {
+  updateConfig(newConfig: Partial<AIChatBotOptions>) {
     this.config = { ...this.config, ...newConfig };
 
     if (this.iframe) {
       const newSrc = this.buildIframeUrl();
       if (this.iframe.src !== newSrc) {
-        console.debug("[AIChatBox] Updating iframe src:", newSrc);
+        console.debug("[AIChatBot] Updating iframe src:", newSrc);
         this.iframe.src = newSrc;
       }
       this.iframe.className = this.config.class || "";
@@ -97,7 +97,7 @@ export class AIChatBox {
       };
 
       iframe.onerror = () => {
-        console.error("[AIChatBox] Failed to load iframe");
+        console.error("[AIChatBot] Failed to load iframe");
       };
 
       const container =
@@ -110,7 +110,7 @@ export class AIChatBox {
       if (container) {
         container.appendChild(iframe);
       } else {
-        console.warn("[AIChatBox] Container not found for custom mode.");
+        console.warn("[AIChatBot] Container not found for custom mode.");
       }
 
       this.iframe = iframe;
@@ -208,7 +208,7 @@ export class AIChatBox {
       const url = new URL(this.config.url);
       return url.origin;
     } catch (e) {
-      console.warn("[AIChatBox] Invalid iframe URL for origin extraction");
+      console.warn("[AIChatBot] Invalid iframe URL for origin extraction");
       return "*"; // fallback for development
     }
   }

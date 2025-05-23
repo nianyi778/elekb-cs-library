@@ -29,7 +29,7 @@ export interface ChatPayload {
   customData?: unknown;
 }
 
-export interface AIChatBoxOptions {
+export interface AIChatBotOptions {
   /**
    * 聊天页面的地址（iframe 的 src 或新标签页跳转用）
    */

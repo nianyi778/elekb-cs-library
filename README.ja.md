@@ -25,7 +25,7 @@ yarn add ai-chat-bot-sdk
 <button id="chatTrigger">チャットを開く</button>
 <script src="./dist/ai-chat-bot-sdk.umd.js"></script>
 <script>
-  const chat = new window.AIChatBox({
+  const chat = new window.AIChatBot({
     url: 'https://chat.example.com',
     mode: 'custom',
     container: '#chatContainer',
@@ -39,13 +39,13 @@ yarn add ai-chat-bot-sdk
 ### React の例（TypeScript）
 ```tsx
 import { useEffect, useRef } from 'react';
-import { AIChatBox } from 'ai-chat-bot-sdk';
+import { AIChatBot } from 'ai-chat-bot-sdk';
 
 export default function App() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const chat = new AIChatBox({
+    const chat = new AIChatBot({
       url: 'https://chat.example.com',
       mode: 'custom',
       container: containerRef.current!,
@@ -74,13 +74,13 @@ export default function App() {
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { AIChatBox } from 'ai-chat-bot-sdk';
+import { AIChatBot } from 'ai-chat-bot-sdk';
 
 const containerRef = ref<HTMLElement | null>(null);
-let chat: AIChatBox;
+let chat: AIChatBot;
 
 onMounted(() => {
-  chat = new AIChatBox({
+  chat = new AIChatBot({
     url: 'https://chat.example.com',
     mode: 'custom',
     container: containerRef.value!,

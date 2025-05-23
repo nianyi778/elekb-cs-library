@@ -9,7 +9,7 @@ export default {
     {
       file: 'dist/ai-chat-bot-sdk.umd.js',
       format: 'umd',
-      name: 'AIChatBox',
+      name: 'AIChatBot',
       globals: {},
     },
     {

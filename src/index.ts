@@ -1,3 +1,3 @@
-import { AIChatBox } from './core/AIChatBox';
+import { AIChatBot } from './core/AIChatBot';
 
-export default AIChatBox; 
+export default AIChatBot; 
