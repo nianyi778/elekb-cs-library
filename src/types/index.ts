@@ -1,13 +1,13 @@
 export interface ChatSessionPayload {
   /** 会话相关信息 */
-  uuid: string;         // 页面唯一识别码，短期有效
-  sessionId: string;    // 长期持久化的会话 ID（便于追踪）
+  uuid: string; // 页面唯一识别码，短期有效
+  sessionId: string; // 长期持久化的会话 ID（便于追踪）
 
   /** 本地化语言 */
-  lang?: 'zh' | 'en' | 'ja';
+  lang?: "zh" | "en" | "ja";
 
   /** 当前功能上下文 */
-  feature?: string;           // 功能编号，如 'settlement.confirm'
+  feature?: string; // 功能编号，如 'settlement.confirm'
   menu?: {
     id: string;
     name: string;
@@ -42,17 +42,22 @@ export interface AIChatBoxOptions {
   styles?: Partial<CSSStyleDeclaration>;
 
   /**
+   * iframe 的 className，用于自定义样式
+   * */ 
+  class?: string;
+
+  /**
    * 会话框打开的方式：
    * - 'popup': 以浮窗方式打开（默认）
    * - 'new-tab': 新开标签页打开
    * - 'custom': 挂载到用户指定容器（container）中
    */
-  mode?: 'popup' | 'new-tab' | 'custom';
+  mode?: "popup" | "new-tab" | "custom";
 
   /**
    * 弹窗位置（仅在 mode 为 'popup' 时生效）
    */
-  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  position?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
 
   /**
    * 交互信息，会作为参数传递给 iframe 页面
@@ -75,7 +80,7 @@ export interface AIChatBoxOptions {
    * 可选的主题参数，可用于 iframe 内部样式控制
    * 通常为 'light' 或 'dark'
    */
-  theme?: 'light' | 'dark';
+  theme?: "light" | "dark";
 
   /**
    * iframe 展开时触发的回调（可用于联动 UI）
@@ -86,5 +91,14 @@ export interface AIChatBoxOptions {
    * iframe 收起时触发的回调（可用于联动 UI）
    */
   onClose?: (visible: boolean) => void;
-}
 
+  /**
+   * iframe 验签完成时触发的回调
+   */
+  onAuth?: (payload?: unknown) => void;
+
+  /**
+   * iframe 内部发生错误时触发的回调
+   * */
+  onError?: (error: unknown) => void;
+}

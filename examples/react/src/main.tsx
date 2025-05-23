@@ -14,10 +14,15 @@ const chat = new AIChatBox({
   onClose: () => {
     console.log("Chat closed");
   },
+  onReady: () => {
+    chat.init();
+    console.log("Chat ready");
+  },
   position: "bottom-right",
   payload: {
     uuid: "1234567890",
     sessionId: "1234567890",
+    token: "1234567890",
     user: {
       id: "j.t",
       name: "React User",
@@ -25,8 +30,6 @@ const chat = new AIChatBox({
     lang: "en",
   },
 });
-
-chat.init();
 
 function App() {
   return (

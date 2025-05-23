@@ -6,6 +6,7 @@ export class AIChatBox {
   private config: AIChatBoxOptions;
   private iframe?: HTMLIFrameElement;
   visible = false;
+  loading = false;
 
   constructor(config: AIChatBoxOptions) {
     this.config = config;
@@ -51,9 +52,10 @@ export class AIChatBox {
     if (this.iframe) {
       const newSrc = this.buildIframeUrl();
       if (this.iframe.src !== newSrc) {
-        console.log("[AIChatBox] Updating iframe src:", newSrc);
+        console.debug("[AIChatBox] Updating iframe src:", newSrc);
         this.iframe.src = newSrc;
       }
+      this.iframe.className = this.config.class || "";
       this.applyStyles();
     } else {
       const useCustom = this.config.mode === "custom";
@@ -87,17 +89,23 @@ export class AIChatBox {
   private ensureIframe(useCustomContainer = false) {
     if (!this.iframe) {
       const iframe = createIframe(this.buildIframeUrl());
+      iframe.className = this.config.class || "";
       iframe.dataset["chatbox"] = "true";
 
       iframe.onload = () => {
         this.sendInitContext();
       };
 
-      const container = useCustomContainer && this.config.container
-        ? (typeof this.config.container === "string"
+      iframe.onerror = () => {
+        console.error("[AIChatBox] Failed to load iframe");
+      };
+
+      const container =
+        useCustomContainer && this.config.container
+          ? typeof this.config.container === "string"
             ? document.querySelector(this.config.container)
-            : this.config.container)
-        : document.body;
+            : this.config.container
+          : document.body;
 
       if (container) {
         container.appendChild(iframe);
@@ -114,7 +122,11 @@ export class AIChatBox {
   private applyStyles() {
     if (!this.iframe) return;
 
-    const { mode = "popup", position = "bottom-right", styles = {} } = this.config;
+    const {
+      mode = "popup",
+      position = "bottom-right",
+      styles = {},
+    } = this.config;
 
     const mergedStyles =
       mode === "custom"
@@ -167,10 +179,26 @@ export class AIChatBox {
 
   private listenIframeEvents() {
     window.addEventListener("message", (event) => {
+      const { token } = this.config.payload || {};
       const origin = this.getIframeOrigin();
-      if (event.data?.type === "AIChat:close" && event.origin === origin) {
-        this.destroy();
-        this.config.onClose?.(false);
+      if (event.origin === origin) {
+        if (event.data?.type === "AIChat:close") {
+          this.destroy();
+          this.config.onClose?.(false);
+        }
+        if (token) {
+          this.loading = true;
+          if (event.data?.type === "AIChat:auth") {
+            this.loading = false;
+            this.config.onAuth?.(event.data.payload);
+          }
+        } else {
+          this.config.onAuth?.();
+        }
+
+        if (event.data?.type === "AIChat:error") {
+          this.config.onError?.(event.data.payload);
+        }
       }
     });
   }

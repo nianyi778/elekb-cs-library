@@ -1,32 +1,51 @@
 <!DOCTYPE html>
 <html lang="zh">
-<head>
-  <meta charset="UTF-8" />
-  <title>ChatBot Iframe</title>
-</head>
-<body>
-  <h2>我是 ChatBot 页面</h2>
-  <div id="context"></div>
-  <button id="closeBtn">❌ 关闭聊天</button>
+  <head>
+    <meta charset="UTF-8" />
+    <title>ChatBot Iframe</title>
+  </head>
+  <body>
+    <h2>我是 ChatBot 页面</h2>
+    <div id="context"></div>
+    <button id="closeBtn">❌ 关闭聊天</button>
 
-  <script>
-    window.addEventListener('message', (event) => {
-      if (event.data?.type === 'AIChat:init') {
-        const { token, user, tags ,feature} = event.data.payload;
-        document.getElementById('context').innerText =
-          `已接收上下文：${JSON.stringify(event.data.payload ,null, 2)}`;
+    <script>
+      function callback(payload) {
+        const { token, user, tags, feature } = payload;
+        if (token) {
+          setTimeout(() => {
+            window.parent.postMessage(
+              {
+                type: "AIChat:auth",
+                payload: {
+                  code: 200,
+                },
+              },
+              "*"
+            );
+          }, 2000);
+        }
+        document.getElementById(
+          "context"
+        ).innerText = `已接收上下文：${JSON.stringify(
+          event.data.payload,
+          null,
+          2
+        )}`;
       }
 
-    if (event.data?.type === 'AIChat:update') {
-        const { token, user, tags ,feature} = event.data.payload;
-        document.getElementById('context').innerText =
-          `已接收上下文：${JSON.stringify(event.data.payload ,null, 2)}`;
-      }
+      window.addEventListener("message", (event) => {
+        if (event.data?.type === "AIChat:init") {
+          callback(event.data.payload);
+        }
 
-    });
-    document.getElementById('closeBtn').addEventListener('click', () => {
-      window.parent.postMessage({ type: 'AIChat:close' }, '*');
-    });
-  </script>
-</body>
+        if (event.data?.type === "AIChat:update") {
+          callback(event.data.payload);
+        }
+      });
+      document.getElementById("closeBtn").addEventListener("click", () => {
+        window.parent.postMessage({ type: "AIChat:close" }, "*");
+      });
+    </script>
+  </body>
 </html>
