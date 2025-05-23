@@ -1,4 +1,4 @@
-import { AIChatBoxOptions, ChatSessionPayload } from "../types";
+import type { AIChatBoxOptions, ChatPayload } from "../types";
 import { createIframe, DEFAULT_STYLES } from "../dom/createIframe";
 import { resolvePositionStyle } from "../dom/position";
 
@@ -69,7 +69,7 @@ export class AIChatBox {
     this.visible = false;
   }
 
-  sendUpdateContext(context: ChatSessionPayload) {
+  sendUpdateContext(context: ChatPayload) {
     if (!this.iframe?.contentWindow) return;
 
     this.config.payload = {

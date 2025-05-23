@@ -1,4 +1,4 @@
-export interface ChatSessionPayload {
+export interface ChatPayload {
   /** 会话相关信息 */
   uuid: string; // 用户唯一识别码，浏览器本地存储
   sessionId: string; // 会话 ID（便于追踪）
@@ -62,7 +62,7 @@ export interface AIChatBoxOptions {
   /**
    * 交互信息，会作为参数传递给 iframe 页面
    */
-  payload?: ChatSessionPayload;
+  payload?: ChatPayload;
 
   /**
    * 触发按钮的选择器（如 '#chatBtn'），SDK 会自动绑定点击事件
